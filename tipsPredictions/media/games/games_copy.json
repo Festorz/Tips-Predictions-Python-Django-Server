@@ -1,0 +1,37 @@
+[
+ {
+   "FIELD1": 1,
+   "Time": "21:30:00 PM",
+   "Date": "12-03-22",
+   "Match": "Konyaspor Vs Sivasspor",
+   "Prediction": "1"
+ },
+ {
+   "FIELD1": 2,
+   "Time": "20:00:00 PM",
+   "Date": "12-03-22",
+   "Match": "Vaduz Vs Kriens",
+   "Prediction": "1"
+ },
+ {
+   "FIELD1": 3,
+   "Time": "20:00:00 PM",
+   "Date": "12-03-22",
+   "Match": "Lks Lodz Vs Olsztyn Sa",
+   "Prediction": "Over 1.5"
+ },
+ {
+   "FIELD1": 4,
+   "Time": "21:00:00 PM",
+   "Date": "12-03-22",
+   "Match": "Amiens Vs Nancy",
+   "Prediction": "1:1"
+ },
+ {
+   "FIELD1": 5,
+   "Time": "19:00:00 PM",
+   "Date": "12-03-22",
+   "Match": "Montpellier Vs Nice",
+   "Prediction": "2:1"
+ }
+]

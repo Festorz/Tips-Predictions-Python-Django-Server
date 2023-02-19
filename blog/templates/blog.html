@@ -1,0 +1,126 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block title %}Blog{% endblock %}
+{% block content %}
+  <main id="main">
+
+    <!-- ======= Blog Section ======= -->
+    <section class="container breadcrumbs">
+      <div class="container">
+
+        <div class="d-flex justify-content-between align-items-center">
+          <h2>Blog</h2>
+
+          <ol>
+            <li><a href="{% url 'tips:home' %}">Home</a></li>
+            <li>Blog</li>
+          </ol>
+        </div>
+
+      </div>
+    </section><!-- End Blog Section -->
+
+    <!-- ======= Blog Section ======= -->
+    <section id="blog" class="blog">
+      <div class="container" data-aos="fade-up">
+
+        <div class="row">
+          
+          <div class="col-lg-8 entries">
+            {% for post in posts %}
+            <article class="entry">
+
+              <div class="entry-img">
+                <img src="{{post.image.url}}" alt="" class="img-fluid">
+              </div>
+
+              <h2 class="entry-title">
+                <a href="{% url 'blog:post-detail' post.slug %}"> {{post.title}}</a></h2>
+
+              <div class="entry-meta">
+                <ul>
+                  <li class="d-flex align-items-center"><i class="bi bi-person"></i> <a href="{% url 'blog:post-detail' post.slug  %}">{{post.author}}</a></li>
+                  <li class="d-flex align-items-center"><i class="bi bi-clock"></i> <a href="{% url 'blog:post-detail' post.slug  %}"><time datetime="2020-01-01">{{post.date_added}}</time></a></li>
+                  <li class="d-flex align-items-center"><i class="bx bx-like"></i> <a href="">{{post.number_of_likes}} like{{post.number_of_likes|pluralize}}</a></li>
+                  <li class="d-flex align-items-center"><i class="bi-eye"></i> <a href="{% url 'blog:post-detail' post.slug  %}">{{post.number_of_views}} view{{post.number_of_views|pluralize}}</a></li>
+                  <li class="d-flex align-items-center"><i class="bi bi-chat-dots"></i> <a href="{% url 'blog:post-detail' post.slug  %}">{{post.comments.all.count}} comment{{comments.pluralize}}</a></li>
+                </ul>
+              </div>
+
+              <div class="entry-content">
+                <p>
+                 {{post.intro}}
+                </p>
+                <div class="read-more">
+                  <a href="{% url 'blog:post-detail' post.slug  %}">Read More</a>
+                </div>
+              </div>
+            </article>
+            {% empty %}
+              <div >
+                <p>
+                 No blog posts currently...
+                </p>
+              </div>
+            {% endfor %}
+
+            <div class="blog-pagination">
+              <ul class="justify-content-center">
+                {% for num in posts.paginator.page_range %}
+                {% if posts.number == num %}
+                <li><a href="?page={{ num }}">{{ num }}</a></li>
+                {% elif num > posts.number|add:'-5' and num < posts.number|add:'5' %}
+                <li class="active"><a href="?page={{ num }}">{{ num }}</a></li>
+                {% endif %}
+                {% endfor %}
+                {% if posts.has_next %}
+                <li><a href="?page={{ posts.next_page_number }}">
+                   <span aria-hidden="true">
+                        <span class="bx bx-chevron-right"></span>
+                    </span>
+                </a></li>
+                {% endif %}
+              </ul>
+            </div>
+
+          </div><!-- End blog entries list -->
+
+          <div class="col-lg-4">
+
+            <div class="sidebar">
+
+              <h3 class="sidebar-title">Search</h3>
+              <div class="sidebar-item search-form">
+                <form action="">
+                  <input type="text" placeholder="Search..." type="search" name="q">
+                  <button type="submit"><i class="bi bi-search"></i></button>
+                </form>
+              </div><!-- End sidebar search formn-->
+
+
+              <h3 class="sidebar-title">Recent Posts</h3>
+              <div class="sidebar-item recent-posts">
+                {% for post in recent_post%}
+                <div class="post-item clearfix">
+                  <img src="{{post.image.url}}" alt="">
+                  <h4><a href="{% url 'blog:post-detail' post.slug  %}">{{post.title}}</a></h4>
+                  <time datetime="2020-01-01">{{post.date_added}}</time>
+                </div>
+                {% endfor %}
+              
+
+              </div><!-- End sidebar recent posts-->
+
+            
+
+            </div><!-- End sidebar -->
+
+          </div><!-- End blog sidebar -->
+
+        </div>
+
+      </div>
+    </section><!-- End Blog Section -->
+
+  </main><!-- End #main -->
+{% endblock %}

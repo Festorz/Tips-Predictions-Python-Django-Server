@@ -1,0 +1,167 @@
+{% extends 'base.html'%}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %}
+{{post.title}}
+{% endblock %}
+{% block content %}
+  <main id="main">
+
+    <!-- ======= Blog Section ======= -->
+    <section class="container breadcrumbs">
+      <div class="container">
+
+        <div class="d-flex justify-content-between align-items-center">
+          <h2>Blog</h2>
+
+          <ol>
+            <li><a href="{% url 'tips:home' %}">Home</a></li>
+            <li><a href="{% url 'blog:blogs' %}">Blog</a></li>
+            <li>{{post.title}}</li>
+          </ol>
+        </div>
+
+      </div>
+    </section><!-- End Blog Section -->
+
+    <!-- ======= Blog Single Section ======= -->
+    <section id="blog" class="blog">
+      <div class="container" data-aos="fade-up">
+
+        <div class="row">
+
+          <div class="col-lg-8 entries">
+
+            <article class="entry entry-single">
+
+              <div class="entry-img">
+                <img src="{{post.image.url}}" alt="" class="img-fluid">
+              </div>
+
+              <h2 class="entry-title">
+                <a href="{% url 'blog:post-detail' post.slug %}">{{post.title}}</a>
+              </h2>
+
+              <div class="entry-meta">
+                <ul>
+                  <li class="d-flex align-items-center"><i class="bi bi-person"></i> <a href="{% url 'blog:post-detail' post.slug %}">{{post.author}}</a></li>
+                  <li class="d-flex align-items-center"><i class="bi bi-clock"></i> <a href="{% url 'blog:post-detail' post.slug %}"><time datetime="2020-01-01">{{post.date_added}}</time></a></li>
+                  <li class="d-flex align-items-center"><i class="bx bx-like"></i> <a href="">{{post.number_of_likes}} like{{post.number_of_likes|pluralize}}</a></li>
+                  <li class="d-flex align-items-center"><i class="bi-eye"></i> <a href="{% url 'blog:post-detail' post.slug  %}">{{post.number_of_views}} view{{post.number_of_views|pluralize}}</a></li>
+                  <li class="d-flex align-items-center"><i class="bi bi-chat-dots"></i> <a href="{% url 'blog:post-detail' post.slug %}">{{post.comments.all.count}} comment{{comments.pluralize}}</a></li>
+                </ul>
+              </div>
+
+              <div class="entry-content">
+                <p>{{post.body|linebreaksbr }} </p>
+                <!-- <p>{{post.body|linebreaks }} </p> -->
+                
+              </div>
+            </article><!-- End blog entry -->
+
+            <div class="blog-comments">
+
+              <h4 class="comments-count">{{post.comments.all.count}} comment{{post.comments.all.count|pluralize}}</h4>
+
+              {% for comment in post.comments.all %}
+              <div id="comment-2" class="comment">
+                <div class="d-flex">
+                  <div class="comment-img"><img src="assets/img/blog/comments-2.jpg" alt=""></div>
+                  <div>
+                    <h5><a href="">{{comment.name}}</a></h5>
+                    <time datetime="2020-01-01">{{comment.date_added}}</time>
+                    <p>
+                    {{comment.comment}}                   
+                   </p>
+                  </div>
+                </div>
+                <!-- replied comments -->
+                <!-- todo  -->
+              
+              </div><!-- End comment #2-->
+            
+              {% endfor %}
+
+           
+              <div class="reply-form">
+                <h4>Leave a Reply</h4>
+                <p>Your email address will not be published. Required fields are marked * </p>
+                <form method="post" action="." >
+                  {% csrf_token %}
+                  <div class="row">
+                    <div class="col-md-6 form-group">
+                      <input name="name" type="text" class="form-control" placeholder="Your Name*" required>
+                    </div>
+                    <div class="col-md-6 form-group">
+                      <input name="email" type="text" class="form-control" placeholder="Your Email*" required>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col form-group">
+                      <input name="website" type="text" class="form-control" placeholder="Your Website">
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col form-group">
+                      <textarea name="comment" class="form-control" placeholder="Your Comment*" required></textarea>
+                    </div>
+                  </div>
+                  <button type="submit" class="btn btn-primary">Post Comment</button>
+
+                </form>
+
+              </div><!-- End blog comments -->
+            </div>
+            
+            <div class="share align-items-center">
+              <div class=" row social-links ">
+                <h4>Like and share</h4>
+                <div class="col-md-6">
+                  <a  href="{% url 'blog:like-post' post.slug %}"><i class="bx bxs-like"></i></a>
+                </div>
+                <div class="col-md-6">
+                  <a href="https://twitter.com/home?status={{share_string}}%20{{request.path}}"><i class="bx bxl-twitter"></i></a>
+                  <a href="https://www.facebook.com/sharer/sharer.php?u={{request.build_absolute_uri}}"><i class="bx bxl-facebook"></i></a>
+                  <a href="http://www.reddit.com/submit?url={{request.build_absolute_uri}}&title={{share_string}}"><i class="bx bxl-reddit"></i></a>
+                  <a href="https://www.linkedin.com/shareArticle?mini=true&url={{request.build_absolute_uri}}&title={{post.title}}&summary={{share_string}}&source={{request.build_absolute_uri}}"><i class="bx bxl-linkedin"></i></a>
+                  <a href="https://plus.google.com/share?url={{request.build_absolute_uri}}"><i class='bx bxl-google-plus-circle' ></i></a>
+              </div>
+
+              
+              </div>
+            </div>
+          
+              
+            
+
+          </div><!-- End blog entries list -->
+
+          <div class="col-lg-4">
+
+            <div class="sidebar">
+
+              <h3 class="sidebar-title">Recent Posts</h3>
+              <div class="sidebar-item recent-posts">
+                {% for post in recent %}
+                <div class="post-item clearfix">
+                  <img src="{{post.image.url}}" alt="">
+                  <h4><a href="{% url 'blog:post-detail' post.slug %}">{{post.title}}</a></h4>
+                  <time datetime="2020-01-01">{{post.date_added}}</time>
+                </div>
+                {% endfor %}
+            
+              </div><!-- End sidebar recent posts-->
+              </div><!-- End sidebar tags-->
+
+            </div><!-- End sidebar -->
+
+          </div><!-- End blog sidebar -->
+
+        </div>
+
+      </div>
+    </section><!-- End Blog Single Section -->
+
+  </main><!-- End #main -->
+{% endblock %}
+ 
